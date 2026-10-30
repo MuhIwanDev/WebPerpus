@@ -1,8 +1,0 @@
-PERPUSTAKAAN SMPIT — FINAL BARCODE KAMERA 2026
-Perbaikan:
-- Scan barcode/QR dengan kamera menggunakan html5-qrcode.
-- Fallback scanner USB/keyboard tetap tersedia.
-- Barcode anggota AG-000001 dan seterusnya.
-- Barcode buku/eksemplar ditampilkan pada halaman scan.
-- Kartu anggota mendukung barcode CODE128.
-- Kategori Data Buku dibatasi: Fiksi dan Nonfiksi.

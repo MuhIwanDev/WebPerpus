@@ -1,9 +1,0 @@
-<?php
-require '../config/config.php'; role(['administrator','pustakawan']);
-$mo=$_GET['month']??date('Y-m');
-$s=$pdo->prepare("SELECT u.id,u.name,u.username,u.class_name,
- (SELECT COUNT(*) FROM visits v WHERE v.user_id=u.id AND DATE_FORMAT(v.visit_date,'%Y-%m')=?) visits,
- (SELECT COUNT(*) FROM loans l WHERE l.user_id=u.id AND DATE_FORMAT(l.loan_date,'%Y-%m')=?) loans,
- (SELECT COUNT(*) FROM loans l2 WHERE l2.user_id=u.id AND l2.returned_at IS NOT NULL AND DATE_FORMAT(l2.returned_at,'%Y-%m')=?) returns_count
- FROM users u WHERE u.role='anggota' ORDER BY (visits+loans+returns_count) DESC,u.name");$s->execute([$mo,$mo,$mo]);$rows=$s->fetchAll();
-?><!doctype html><html lang=id><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Anggota Paling Aktif</title><link rel=stylesheet href=../public/style.css></head><body><div class=layout><?php include '../public/nav.php'?><main class=main><h1>🏆 Anggota Paling Aktif</h1><form class=search><input type=month name=month value="<?=e($mo)?>"><button>Tampilkan</button></form><br><table class=table><tr><th>Rank</th><th>Anggota</th><th>Kelas</th><th>Kunjungan</th><th>Peminjaman</th><th>Pengembalian</th><th>Total Aktivitas</th><th>Detail</th></tr><?php foreach($rows as $i=>$r):$total=$r['visits']+$r['loans']+$r['returns_count'];?><tr><td><b><?=$i+1?></b></td><td><?=e($r['name'])?><br><small><?=e($r['username'])?></small></td><td><?=e($r['class_name'])?></td><td><?=$r['visits']?></td><td><?=$r['loans']?></td><td><?=$r['returns_count']?></td><td><b><?=$total?></b></td><td><a class="btn" href="member_activity.php?id=<?=$r['id']?>">Lihat aktivitas</a></td></tr><?php endforeach?><?php if(!$rows):?><tr><td colspan=8>Belum ada data anggota.</td></tr><?php endif?></table></main></div></body></html>
